@@ -2,40 +2,63 @@ package exercicios0302;
 
 import java.util.ArrayList;
 
-public class Elevador extends Pessoas {
+import exercicios0301.Pessoa;
 
+//import exercicios0301.Pessoa;
+
+public class Elevador {
+	// propriedade de classe, sempre privadas
+	private final static double pesoMax = 200.0;
 	private int andarAtual;
-	private int capacidade;
-	private ArrayList<Pessoas> pessoas;
-	private final static double pesoMax = 110.0;
+	private int andaresPredio;
+	private double pesoPessoas;
+	private ArrayList<Pessoas> listaPessoas = new ArrayList<Pessoas>();
+	// private double pesoPessoa;
 
-	public Elevador(int andarAtual, int capacidade, double pesoMax, double peso, String nome) {
-		super(peso, nome);
+	// construtor
+	public Elevador(int andarAtual, int andaresPredio) {
 		this.andarAtual = andarAtual;
-		this.capacidade = capacidade;
-		// this.pessoas = pessoas;
+		this.andaresPredio = andaresPredio;
+		this.pesoPessoas = 0;
 	}
 
-	public ArrayList<Pessoas> getPessoas() {
-		if (pesoTotal() <= pesoMax) {
-			System.out.print("Peso maximo atingido");
+	public void sobe() {
+		if (this.andarAtual < this.andaresPredio)
+			this.andarAtual += 1;
+	}
+
+	public void desce() {
+		if (this.andarAtual > 0)
+			this.andarAtual -= 1;
+	}
+
+	public void entraPessoa(Pessoas pessoa) {
+		if (pesoPessoas + pessoa.getPeso() <= pesoMax) {
+			this.listaPessoas.add(pessoa);
+			this.pesoPessoas += pessoa.getPeso();
+			System.out.println("Pessoa adicionada com sucesso");
+		} else {
+			System.out.println("Peso excede capacidade elevador");
 		}
-		return pessoas;
 	}
 
-	public void setPessoa(ArrayList<Pessoas> pessoas) {
-		this.pessoas = pessoas;
+	public ArrayList<Pessoas> getListaPessoas() {
+		return listaPessoas;
 	}
 
-	private double pesoTotal() {
-		double pesoTotal = 0.0;
+	public void setListaPessoas(ArrayList<Pessoas> listaPessoas) {
+		this.listaPessoas = listaPessoas;
+	}
 
-//		for (Pessoas p : getPeso()) {
-//			pesoTotal += p.getPeso();
-//
-//		}
-
-		return pesoTotal;
+	public void saiPessoa(Double peso) {
+		for (Pessoas pessoa : listaPessoas) {
+			if (peso == pessoa.getPeso()) {
+				listaPessoas.remove(pessoa);
+				System.out.println("Pessoa removida com sucesso");
+				return;
+			}
+		}
+		System.out.println("Não foi possivel remover pessoas");
 	}
 
 	public int getAndarAtual() {
@@ -46,18 +69,18 @@ public class Elevador extends Pessoas {
 		this.andarAtual = andarAtual;
 	}
 
-	public int getCapacidade() {
-		return capacidade;
+	public int getAndaresPredio() {
+		return andaresPredio;
 	}
 
-	public void setCapacidade(int capacidade) {
-		this.capacidade = capacidade;
+	public void setAndaresPredio(int andaresPredio) {
+		this.andaresPredio = andaresPredio;
 	}
 
 	@Override
 	public String toString() {
-		return "\nAndar atual: " + andarAtual + "\nCapacidade: " + capacidade + "\nPessoas: " + pessoas
-				+ "\nPeso maximo: " + pesoMax;
+		return "\nAndar atual: " + andarAtual + "\nPeso maximo: " + pesoMax + "\nQuantidade de pessoas: "
+				+ this.listaPessoas.size();
 	}
 
 }
